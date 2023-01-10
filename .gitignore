@@ -1,0 +1,13 @@
+.env
+.log/
+artifacts/
+cache/
+forge-cache/
+node_modules/
+out/
+scratch/
+*.swp
+*.tmp
+*.tmp.*
+tmp/
+.idea/
