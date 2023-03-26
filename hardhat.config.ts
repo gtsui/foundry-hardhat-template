@@ -13,7 +13,7 @@ import 'hardhat-gas-reporter';
 export default {
 
   solidity: {
-    version: "0.8.17",
+    version: "0.8.19",
     settings: {
       optimizer: {
         enabled: true,
@@ -24,9 +24,9 @@ export default {
 
   networks: {
     ethereum: {
-      url: process.env.ETHEREUM,
+      url: process.env.ETHEREUM_PROVIDER,
       chainId: 1,
-      accounts: process.env.ETHEREUM_KEYS!.split(","),
+      accounts: process.env.KEYS!.split(","),
       timeout: 120000000,
       verify: {
         etherscan: {
@@ -34,7 +34,44 @@ export default {
           apiKey: process.env.ETHERSCAN_APIKEY
         }
       }
+    },
+    goerli: {
+      url: process.env.GOERLI_PROVIDER,
+      chainId: 5,
+      accounts: process.env.KEYS!.split(","),
+      timeout: 120000000,
+      verify: {
+        etherscan: {
+          apiUrl: "http://goerli.etherscan.io",
+          apiKey: process.env.ETHERSCAN_APIKEY
+        }
+      }
+    },
+    arbitrum: {
+      url: process.env.ARBITRUM_PROVIDER,
+      chainId: 42161,
+      accounts: process.env.KEYS!.split(","),
+      timeout: 120000000,
+      verify: {
+        etherscan: {
+          apiUrl: "http://arbiscan.io",
+          apiKey: process.env.ETHERSCAN_APIKEY
+        }
+      }
+    },
+    arbitrumGoerli: {
+      url: process.env.ARBITRUM_GOERLI_PROVIDER,
+      chainId: 421613,
+      accounts: process.env.KEYS!.split(","),
+      timeout: 120000000,
+      verify: {
+        etherscan: {
+          apiUrl: "http://goerli.arbiscan.io",
+          apiKey: process.env.ETHERSCAN_APIKEY
+        }
+      }
     }
+
   },
 
   mocha: {
