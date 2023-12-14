@@ -12,9 +12,18 @@ const deployer = async (hre: HardhatRuntimeEnvironment) => {
 
   const zimaRouter = await ethers.getContract("ZimaRouter");
 
+  let network = hre.hardhatArguments.network == undefined ? 'hardhat' : hre.hardhatArguments.network
+
+  let uniswapV2RouterAddr;
+  if(network === "ethereum") {
+    uniswapV2RouterAddr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+  } else if(network === "goerli") {
+    uniswapV2RouterAddr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";    
+  }
+  
   let signers = await ethers.getSigners();
   let zimaRouterAddr = await zimaRouter.getAddress();
-  let args = [zimaRouterAddr];
+  let args = [zimaRouterAddr, uniswapV2RouterAddr];
 
   await deploy(
     CONTRACT_LABEL,

@@ -6,7 +6,7 @@ import "./TestUtils.sol";
 import "../contracts/ZimaRouter.sol";
 import "../contracts/UniswapV2Adapter.sol";
 
-contract TestZimaRouter is TestUtils {
+contract TestUniswapV2Adapter is TestUtils {
 
   using SafeERC20 for IERC20;
   
@@ -26,7 +26,7 @@ contract TestZimaRouter is TestUtils {
     vm.startPrank(_user1);
     _USDT.safeApprove(address(_zimaRouter), SWAP_AMOUNT);
     _zimaRouter.swapExactTokensForETH(
-                                      1,
+                                      _ADAPTER_ID_UNISWAP_V2,
                                       payable(_user1),
                                       address(_USDT),
                                       SWAP_AMOUNT,
@@ -63,7 +63,7 @@ contract TestZimaRouter is TestUtils {
    
     vm.startPrank(_user1);
     _zimaRouter.swapExactETHForTokens{value: SWAP_AMOUNT}(
-                                                          1,
+                                                          _ADAPTER_ID_UNISWAP_V2,
                                                           _user1,
                                                           address(_USDT),
                                                           0,
