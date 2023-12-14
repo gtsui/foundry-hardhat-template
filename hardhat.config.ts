@@ -1,11 +1,8 @@
-import 'dotenv/config';
+import '@nomicfoundation/hardhat-ethers';
+import '@nomicfoundation/hardhat-verify';
 import 'hardhat-deploy';
-import '@nomiclabs/hardhat-ethers';
-import '@nomiclabs/hardhat-etherscan';
-import '@nomiclabs/hardhat-waffle';
-import '@openzeppelin/hardhat-upgrades';
-import '@openzeppelin/hardhat-defender';
-import 'hardhat-gas-reporter';
+import 'hardhat-deploy-ethers';
+import 'dotenv/config';
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -13,8 +10,9 @@ import 'hardhat-gas-reporter';
 export default {
 
   solidity: {
-    version: "0.8.19",
+    version: "0.8.17",
     settings: {
+      viaIR: true,
       optimizer: {
         enabled: true,
         runs: 200
@@ -26,81 +24,26 @@ export default {
     ethereum: {
       url: process.env.ETHEREUM_PROVIDER,
       chainId: 1,
-      accounts: process.env.KEYS!.split(","),
+      accounts: process.env.KEYS_PROD!.split(","),
       timeout: 120000000,
-      verify: {
-        etherscan: {
-          apiUrl: "http://etherscan.io",
-          apiKey: process.env.ETHERSCAN_APIKEY
-        }
-      }
+      zksync: false
     },
     goerli: {
       url: process.env.GOERLI_PROVIDER,
       chainId: 5,
-      accounts: process.env.KEYS!.split(","),
+      accounts: process.env.KEYS_DEV!.split(","),
       timeout: 120000000,
-      verify: {
-        etherscan: {
-          apiUrl: "http://goerli.etherscan.io",
-          apiKey: process.env.ETHERSCAN_APIKEY
-        }
-      }
-    },
-    arbitrum: {
-      url: process.env.ARBITRUM_PROVIDER,
-      chainId: 42161,
-      accounts: process.env.KEYS!.split(","),
-      timeout: 120000000,
-      verify: {
-        etherscan: {
-          apiUrl: "http://arbiscan.io",
-          apiKey: process.env.ETHERSCAN_APIKEY
-        }
-      }
-    },
-    arbitrumGoerli: {
-      url: process.env.ARBITRUM_GOERLI_PROVIDER,
-      chainId: 421613,
-      accounts: process.env.KEYS!.split(","),
-      timeout: 120000000,
-      verify: {
-        etherscan: {
-          apiUrl: "http://goerli.arbiscan.io",
-          apiKey: process.env.ETHERSCAN_APIKEY
-        }
-      }
-    }
-
-  },
-
-  mocha: {
-    timeout: 12000000
-  },
-
-  verify: {
-    etherscan: {
-      apiKey: process.env.ETHERSCAN_APIKEY
+      zksync: false
     }
   },
   
   etherscan: {
     apiKey: {
       mainnet: process.env.ETHERSCAN_APIKEY,
-      goerli: process.env.ETHERSCAN_APIKEY,
+      goerli: process.env.ETHERSCAN_APIKEY
     }
   },
 
-  gasReporter: {
-    enabled: true,
-    fast: true,
-    gasPrice: 100,
-    coinmarketcap: process.env.COINMARKETCAP_APIKEY,    
-    currency: 'USD',
-    noColors: true,
-    excludeContracts: ['test/']
-  },
-  
   defender: {
     apiKey: process.env.DEFENDER_TEAM_API_KEY,
     apiSecret: process.env.DEFENDER_TEAM_API_SECRET_KEY,
