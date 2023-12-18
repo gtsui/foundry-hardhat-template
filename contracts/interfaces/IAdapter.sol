@@ -10,14 +10,16 @@ interface IAdapter {
                                  address tokenTo,
                                  uint amountIn,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external;
   
   function swapExactETHForTokens(
                                  address recipient,
                                  address tokenTo,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external payable;
   
 }

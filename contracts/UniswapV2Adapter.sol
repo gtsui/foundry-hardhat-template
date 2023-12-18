@@ -34,8 +34,12 @@ contract UniswapV2Adapter is IAdapter {
                                  address tokenFrom,
                                  uint amountIn,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external onlyZimaRouter {
+
+    // shh
+    data;
 
     // Build the path
     address[] memory path = new address[](2);
@@ -68,9 +72,13 @@ contract UniswapV2Adapter is IAdapter {
                                  address recipient,
                                  address tokenTo,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external payable onlyZimaRouter {
 
+    // shh
+    data;
+    
     // Store the full ETH amount sent by `recipient`
     uint amount = msg.value;
     

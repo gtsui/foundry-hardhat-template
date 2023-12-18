@@ -75,7 +75,8 @@ contract ZimaRouter is AccessControlEnumerable, IZimaRouter{
                                  address tokenFrom,
                                  uint amountIn,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external {
 
     // Find the correct `Adapter` to user
@@ -88,7 +89,7 @@ contract ZimaRouter is AccessControlEnumerable, IZimaRouter{
     IERC20(tokenFrom).safeTransferFrom(recipient, address(adapter), amountIn);
 
     // Execute the swap
-    adapter.swapExactTokensForETH(recipient, tokenFrom, amountIn, amountOutMin, deadline);
+    adapter.swapExactTokensForETH(recipient, tokenFrom, amountIn, amountOutMin, deadline, data);
   }
   
   function swapExactETHForTokens(
@@ -96,7 +97,8 @@ contract ZimaRouter is AccessControlEnumerable, IZimaRouter{
                                  address recipient,
                                  address tokenTo,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external payable {
 
     // Find the correct `Adapter` to user
@@ -106,7 +108,7 @@ contract ZimaRouter is AccessControlEnumerable, IZimaRouter{
     require(address(adapter) != address(0), "adapter not found");
 
     // Execute the swap
-    adapter.swapExactETHForTokens{value: msg.value}(recipient, tokenTo, amountOutMin, deadline);
+    adapter.swapExactETHForTokens{value: msg.value}(recipient, tokenTo, amountOutMin, deadline, data);
   }
 
   

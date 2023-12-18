@@ -4,15 +4,15 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./TestUtils.sol";
 import "../contracts/ZimaRouter.sol";
-import "../contracts/UniswapV2Adapter.sol";
+import "../contracts/UniswapV3Adapter.sol";
 
-contract TestUniswapV2Adapter is TestUtils {
+contract TestUniswapV3Adapter is TestUtils {
 
   using SafeERC20 for IERC20;
   
   function setUp() public {
     getZimaRouter();
-    getUniswapV2Adapter();
+    getUniswapV3Adapter();
   }
 
   function testSwapExactTokensForETH() public {
@@ -22,17 +22,20 @@ contract TestUniswapV2Adapter is TestUtils {
     uint userUsdtBefore = _USDT.balanceOf(_user1);
     uint userEthBefore = _user1.balance;
     uint feeWalletEthBefore = _feeWallet.balance;
+
+    // Uniswap v3 pool
+    bytes memory data = abi.encode(0x11b815efB8f581194ae79006d24E0d814B7697F6);
     
     vm.startPrank(_user1);
     _USDT.safeApprove(address(_zimaRouter), SWAP_AMOUNT);
     _zimaRouter.swapExactTokensForETH(
-                                      _ADAPTER_ID_UNISWAP_V2,
+                                      _ADAPTER_ID_UNISWAP_V3,
                                       payable(_user1),
                                       address(_USDT),
                                       SWAP_AMOUNT,
                                       0,
                                       block.timestamp,
-                                      ""
+                                      data
                                       );
     vm.stopPrank();
 
@@ -41,8 +44,8 @@ contract TestUniswapV2Adapter is TestUtils {
     uint feeWalletEthAfter = _feeWallet.balance;
     uint routerUsdtBalance = _USDT.balanceOf(address(_zimaRouter));
     uint routerEthBalance = address(_zimaRouter).balance;
-    uint adapterUsdtBalance = _USDT.balanceOf(address(_uniswapV2Adapter));
-    uint adapterEthBalance = address(_uniswapV2Adapter).balance;
+    uint adapterUsdtBalance = _USDT.balanceOf(address(_uniswapV3Adapter));
+    uint adapterEthBalance = address(_uniswapV3Adapter).balance;
     
     assertEq(userUsdtBefore - userUsdtAfter, SWAP_AMOUNT);
     assertGt(userEthAfter - userEthBefore, 0);
@@ -61,15 +64,18 @@ contract TestUniswapV2Adapter is TestUtils {
     uint userEthBefore = _user1.balance;
     uint userUsdtBefore = _USDT.balanceOf(_user1);
     uint feeWalletEthBefore = _feeWallet.balance;
-   
+
+    // Uniswap v3 pool
+    bytes memory data = abi.encode(0x11b815efB8f581194ae79006d24E0d814B7697F6);    
+    
     vm.startPrank(_user1);
     _zimaRouter.swapExactETHForTokens{value: SWAP_AMOUNT}(
-                                                          _ADAPTER_ID_UNISWAP_V2,
+                                                          _ADAPTER_ID_UNISWAP_V3,
                                                           _user1,
                                                           address(_USDT),
                                                           0,
                                                           block.timestamp,
-                                                          ""
+                                                          data
                                                           );
     vm.stopPrank();
 
@@ -78,8 +84,8 @@ contract TestUniswapV2Adapter is TestUtils {
     uint feeWalletEthAfter = _feeWallet.balance;
     uint routerUsdtBalance = _USDT.balanceOf(address(_zimaRouter));
     uint routerEthBalance = address(_zimaRouter).balance;
-    uint adapterUsdtBalance = _USDT.balanceOf(address(_uniswapV2Adapter));
-    uint adapterEthBalance = address(_uniswapV2Adapter).balance;
+    uint adapterUsdtBalance = _USDT.balanceOf(address(_uniswapV3Adapter));
+    uint adapterEthBalance = address(_uniswapV3Adapter).balance;
     
     assertEq(userEthBefore - userEthAfter, SWAP_AMOUNT);
     assertEq(feeWalletEthAfter - feeWalletEthBefore, SWAP_AMOUNT * 50 / 10000);
@@ -90,6 +96,6 @@ contract TestUniswapV2Adapter is TestUtils {
     assertEq(adapterEthBalance, 0);
     
   }
-  
+
   
 }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import "forge-std/Test.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/UniswapV3/ISwapRouter.sol";
@@ -38,16 +39,18 @@ contract UniswapV3Adapter is IAdapter {
                                  address tokenFrom,
                                  uint amountIn,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external onlyZimaRouter {
-
+   
     // Assume that ZimaRouter has already transferred `tokenFrom` funds
     // to this address. Approve the router to spend this.
     IERC20(tokenFrom).safeApprove(address(_router), amountIn);
 
-    // Get the most liquid fee tier to execute on
-    uint24 fee = _getMostLiquidFeeTier(_zimaRouter.WETH(), tokenFrom);
-
+    // Deserialize the pool address to retrieve fee
+    (address poolAddr) = abi.decode(data, (address));
+    uint24 fee = IUniswapV3Pool(poolAddr).fee();
+    
     // Build the params
     ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
       tokenIn: tokenFrom,
@@ -79,9 +82,10 @@ contract UniswapV3Adapter is IAdapter {
                                  address recipient,
                                  address tokenTo,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external payable onlyZimaRouter {
-
+    
     // Store the full ETH amount sent by `recipient`
     uint amount = msg.value;
     
@@ -93,8 +97,9 @@ contract UniswapV3Adapter is IAdapter {
     WETH.deposit{value: swapAmount}();    
     WETH.approve(address(_router), swapAmount);
 
-    // Get the most liquid fee tier to execute on
-    uint24 fee = _getMostLiquidFeeTier(tokenTo, address(WETH));
+    // Deserialize the pool address to retrieve fee
+    address poolAddr = abi.decode(data, (address));
+    uint24 fee = IUniswapV3Pool(poolAddr).fee();
     
     // Build the params
     ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({

@@ -63,6 +63,10 @@ contract TestUtils is Test {
   function getUniswapV2Adapter() public returns(IAdapter) {
     return _getUniswapV2Adapter();
   }
+
+  function getUniswapV3Adapter() public returns(IAdapter) {
+    return _getUniswapV3Adapter();
+  }
   
   /** INTERNAL FUNCTIONS **/
 
@@ -101,5 +105,5 @@ contract TestUtils is Test {
     }
     return _uniswapV3Adapter;
   }
-  
+
 }

@@ -29,7 +29,8 @@ interface IZimaRouter {
                                  address tokenFrom,
                                  uint amountIn,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external;
   
   function swapExactETHForTokens(
@@ -37,7 +38,8 @@ interface IZimaRouter {
                                  address recipient,
                                  address tokenTo,
                                  uint amountOutMin,
-                                 uint deadline
+                                 uint deadline,
+                                 bytes memory data
                                  ) external payable;
   
   /** VIEW FUNCTIONS **/
