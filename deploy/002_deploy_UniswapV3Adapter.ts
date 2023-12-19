@@ -18,10 +18,10 @@ const deployer = async (hre: HardhatRuntimeEnvironment) => {
   let uniswapV3RouterAddr;
   if(network === "ethereum") {
     uniswapV3FactoryAddr = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
-    uniswapV3RouterAddr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+    uniswapV3RouterAddr = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
   } else if(network === "goerli") {
     uniswapV3FactoryAddr = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
-    uniswapV3RouterAddr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";    
+    uniswapV3RouterAddr = "0xE592427A0AEce92De3Edee1F18E0157C05861564";    
   }
   
   let signers = await ethers.getSigners();
@@ -45,7 +45,7 @@ const deployer = async (hre: HardhatRuntimeEnvironment) => {
   try {
     await hre.run("verify:verify", {
       address: contractAddr,
-      contract: "contracts/UniswapV2Adapter.sol:UniswapV3Adapter",
+      contract: "contracts/UniswapV3Adapter.sol:UniswapV3Adapter",
       constructorArguments: args
     });
   } catch(e) {
