@@ -26,7 +26,7 @@ const deployer = async (hre: HardhatRuntimeEnvironment) => {
   
   let signers = await ethers.getSigners();
   let zimaRouterAddr = await zimaRouter.getAddress();
-  let args = [zimaRouterAddr, uniswapV3RouterAddr];
+  let args = [zimaRouterAddr, uniswapV3FactoryAddr, uniswapV3RouterAddr];
 
   await deploy(
     CONTRACT_LABEL,
